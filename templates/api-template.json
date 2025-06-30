@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serviceName": { "type": "string" },
+    "apiName": { "type": "string" },
+    "apiDisplayName": { "type": "string" },
+    "apiPath": { "type": "string" },
+    "apiSpecUrl": { "type": "string" }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ApiManagement/service/apis",
+      "name": "[concat(parameters('serviceName'), '/', parameters('apiName'))]",
+      "apiVersion": "2021-08-01",
+      "properties": {
+        "displayName": "[parameters('apiDisplayName')]",
+        "path": "[parameters('apiPath')]",
+        "format": "openapi",
+        "value": "[uri(parameters('apiSpecUrl'))]",
+        "protocols": [ "https" ]
+      }
+    }
+  ]
+}

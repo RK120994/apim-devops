@@ -1,0 +1,11 @@
+openapi: 3.0.1
+info:
+  title: FHIR API
+  version: v1
+paths:
+  /Patient:
+    get:
+      summary: List patients
+      responses:
+        '200':
+          description: OK

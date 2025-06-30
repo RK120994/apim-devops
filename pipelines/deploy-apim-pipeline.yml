@@ -1,0 +1,56 @@
+trigger:
+- main
+
+variables:
+  azureSubscription: 'Your-Service-Connection-Name'
+  resourceGroupName: 'RG-DEV-APIGATEWAY'
+  apimName: 'dazufhirapi01'
+  location: 'South Africa North'
+  artifactName: 'apim-artifacts'
+
+stages:
+- stage: Build
+  displayName: 'Build Artifacts'
+  jobs:
+  - job: Build
+    steps:
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(Build.SourcesDirectory)'
+        Contents: |
+          api-definitions/**
+          policies/**
+          templates/**
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: '$(artifactName)'
+
+- stage: Deploy
+  displayName: 'Deploy to APIM'
+  dependsOn: Build
+  jobs:
+  - deployment: Deploy
+    environment: 'dev'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: '$(artifactName)'
+
+          - task: AzureResourceManagerTemplateDeployment@3
+            displayName: 'Deploy API to APIM'
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: '$(azureSubscription)'
+              subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: '$(resourceGroupName)'
+              location: '$(location)'
+              templateLocation: 'Linked artifact'
+              csmFile: '$(Pipeline.Workspace)/$(artifactName)/templates/api-template.json'
+              csmParametersFile: '$(Pipeline.Workspace)/$(artifactName)/templates/parameters.json'
+              deploymentMode: 'Incremental'
