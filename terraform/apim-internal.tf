@@ -3,13 +3,13 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "RG-DEV-APIGATEWAY"
+  name     = "xxxxxxxxxx"
   location = "South Africa North"
 }
 
 resource "azurerm_virtual_network" "vnet" {
   name                = "vnet-internal-apim"
-  address_space       = ["10.10.0.0/16"]
+  address_space       = ["xxxxxxxxx"]
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 }
@@ -18,7 +18,7 @@ resource "azurerm_subnet" "apim_subnet" {
   name                 = "snet-apim"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = ["10.10.58.0/24"]
+  address_prefixes     = ["xxxxxxxxxx"]
 
   delegation {
     name = "apim-delegation"
@@ -53,7 +53,7 @@ resource "azurerm_subnet_network_security_group_association" "apim_nsg_assoc" {
 }
 
 resource "azurerm_api_management" "apim" {
-  name                = "dazufhirapi01"
+  name                = "xxxxxxxxxxx"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   publisher_name      = "YourCompany"
