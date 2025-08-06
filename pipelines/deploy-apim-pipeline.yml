@@ -3,8 +3,8 @@ trigger:
 
 variables:
   azureSubscription: 'Your-Service-Connection-Name'
-  resourceGroupName: 'RG-DEV-APIGATEWAY'
-  apimName: 'dazufhirapi01'
+  resourceGroupName: 'xxxxxxxxxx'
+  apimName: 'xxxxxxxxx'
   location: 'South Africa North'
   artifactName: 'apim-artifacts'
 
