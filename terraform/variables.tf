@@ -5,5 +5,5 @@ variable "location" {
 
 variable "resource_group_name" {
   description = "Resource group name"
-  default     = "RG-DEV-APIGATEWAY"
+  default     = "xxxxxxxxxxx"
 }
